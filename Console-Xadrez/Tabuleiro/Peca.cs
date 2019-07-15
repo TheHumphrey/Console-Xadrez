@@ -4,7 +4,7 @@ using System.Text;
 
 namespace tabuleiro
 {
-    class Peca
+    abstract class Peca
     {
         public Posicao Position { get; set; }
         public Cor Collor { get; set; }
@@ -22,5 +22,8 @@ namespace tabuleiro
         {
             QtMovimento++;
         }
+
+        public abstract bool[,] MovimentosPosssiveis();
     }
 }
+
