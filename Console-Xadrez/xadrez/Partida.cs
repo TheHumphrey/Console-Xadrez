@@ -101,16 +101,48 @@ namespace xadrez
             return false;
         }
 
+        public bool TesteXequeMate(Cor cor)
+        {
+            if (!EstaEmXeque(cor))
+            {
+                return false;
+            }
+            foreach(Peca x in PecasEmJogo(cor))
+            {
+                bool[,] mat = x.MovimentosPosssiveis();
+                for (int i = 0; i < Tab.Linha; i++)
+                {
+                    for(int j = 0; j < Tab.Coluna; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Posicao origem = x.Position;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = ExecutaMovimento(origem, destino);
+                            bool testeXeque = EstaEmXeque(cor);
+                            DesfazMovimento(origem, destino, pecaCapturada);
+                            if (!testeXeque)
+                            {
+                                return false;
+                            }
+
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         private void ColocarPecas()
         {
             ColocarNovaPeca('c', 8, new Rei(Cor.Preto, Tab));
             ColocarNovaPeca('b', 8, new Torre(Cor.Preto, Tab));
-            ColocarNovaPeca('h', 1, new Torre(Cor.Branca, Tab));
-            ColocarNovaPeca('h', 2, new Rei(Cor.Branca, Tab));
+            ColocarNovaPeca('h', 2, new Torre(Cor.Branca, Tab));
+            ColocarNovaPeca('h', 1, new Rei(Cor.Branca, Tab));
             ColocarNovaPeca('h', 3, new Torre(Cor.Branca, Tab));
-            ColocarNovaPeca('g', 1, new Torre(Cor.Branca, Tab));
+            ColocarNovaPeca('g', 2, new Torre(Cor.Branca, Tab));
             ColocarNovaPeca('g', 3, new Torre(Cor.Branca, Tab));
-            ColocarNovaPeca('h', 6, new Torre(Cor.Branca, Tab));
+            ColocarNovaPeca('f', 2, new Torre(Cor.Branca, Tab));
         }
 
         public void RealizaJogada(Posicao origem, Posicao destino)
@@ -132,8 +164,15 @@ namespace xadrez
                 Xeque = false;
             }
 
-            Turno++;
-            MudaJogador();
+            if (TesteXequeMate(Adversaria(JogadorAtual)))
+            {
+                Terminada = true;
+            }
+            else
+            {
+                Turno++;
+                MudaJogador();
+            }
         }
         
         public void ValidarPosicaodeOrigem(Posicao pos)
