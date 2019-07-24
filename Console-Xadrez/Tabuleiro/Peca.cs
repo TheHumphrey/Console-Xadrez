@@ -30,7 +30,7 @@ namespace tabuleiro
 
         public bool ExisteMovimentosPossiveis()
         {
-            bool[,] mat = MovimentosPosssiveis();
+            bool[,] mat = MovimentosPossiveis();
             for(int i = 0; i < Tab.Linha; i++)
             {
                 for (int j = 0; j < Tab.Coluna; j++)
@@ -46,10 +46,10 @@ namespace tabuleiro
 
         public bool MovimentoPossivel(Posicao pos)
         {
-            return MovimentosPosssiveis()[pos.Linha, pos.Coluna];
+            return MovimentosPossiveis()[pos.Linha, pos.Coluna];
         }
 
-        public abstract bool[,] MovimentosPosssiveis();
+        public abstract bool[,] MovimentosPossiveis();
     }
 }
 
